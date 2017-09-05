@@ -57,6 +57,7 @@ def main():
     spoutSender = SpoutSDK.SpoutSender()
     spoutSenderWidth = width
     spoutSenderHeight = height
+    # Its signature in c++ looks like this: bool CreateSender(const char *Sendername, unsigned int width, unsigned int height, DWORD dwFormat = 0);
     spoutSender.CreateSender('Spout for Python Webcam Sender Example', width, height, 0)
     
     # create texture id for use with Spout
@@ -86,6 +87,7 @@ def main():
         glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, frame )
       
         # Send texture to Spout
+        # Its signature in C++ looks like this: bool SendTexture(GLuint TextureID, GLuint TextureTarget, unsigned int width, unsigned int height, bool bInvert=true, GLuint HostFBO = 0);
         spoutSender.SendTexture(senderTextureID, GL_TEXTURE_2D, spoutSenderWidth, spoutSenderHeight, False, 0)
        
         # Clear screen

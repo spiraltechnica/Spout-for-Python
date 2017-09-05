@@ -62,13 +62,15 @@ def main():
     spoutReceiverHeight = args.spout_size[1]
     # create spout receiver
     spoutReceiver = SpoutSDK.SpoutReceiver()
-    # name, width, height, use active sender
+
+	# Its signature in c++ looks like this: bool pyCreateReceiver(const char* theName, unsigned int theWidth, unsigned int theHeight, bool bUseActive);
     spoutReceiver.pyCreateReceiver(receiverName,spoutReceiverWidth,spoutReceiverHeight, False)
 
     # init spout sender
     spoutSender = SpoutSDK.SpoutSender()
     spoutSenderWidth = args.spout_size[0]
     spoutSenderHeight = args.spout_size[1]
+	# Its signature in c++ looks like this: bool CreateSender(const char *Sendername, unsigned int width, unsigned int height, DWORD dwFormat = 0);
     spoutSender.CreateSender('Neural Style Sender', spoutSenderWidth, spoutSenderHeight, 0)
 
     # create textures for spout receiver and spout sender 
@@ -115,7 +117,8 @@ def main():
                 pygame.quit()
                 quit()
         
-        #receive texture
+        # receive texture
+        # Its signature in c++ looks like this: bool pyReceiveTexture(const char* theName, unsigned int theWidth, unsigned int theHeight, GLuint TextureID, GLuint TextureTarget, bool bInvert, GLuint HostFBO);
         spoutReceiver.pyReceiveTexture(receiverName, spoutReceiverWidth, spoutReceiverHeight, textureReceiveID, GL_TEXTURE_2D, False, 0)
         
         glBindTexture(GL_TEXTURE_2D, textureReceiveID)
@@ -175,6 +178,7 @@ def main():
         pygame.display.flip()        
 
         # Send texture to spout...
+        # Its signature in C++ looks like this: bool SendTexture(GLuint TextureID, GLuint TextureTarget, unsigned int width, unsigned int height, bool bInvert=true, GLuint HostFBO = 0);
         spoutSender.SendTexture(textureStyleID, GL_TEXTURE_2D, spoutSenderWidth, spoutSenderHeight, False, 0)
         # FPS = 1 / time to process loop
         print("FPS: ", 1.0 / (time.time() - start_time)) 

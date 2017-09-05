@@ -39,19 +39,7 @@ class SPOUT_DLLEXP SpoutReceiver {
 
 	SpoutReceiver();
     ~SpoutReceiver();
-	//const 
-	/*char const* SayHello();
-	char const* SayHello2();
-	char const* SayHello3(char * test);
-	char const* SayHello4(int & test);
-
-	unsigned int pyWidth, pyHeight;
-	char * pyName;
-	char const * pyGetName();
-	unsigned int pyGetWidth();
-	unsigned int pyGetHeight();
-	bool pyCreateReceiver(bool bUseActive = false);
-	bool pyReceiveTexture(GLuint TextureID = 0, GLuint TextureTarget = 0, bool bInvert = false, GLuint HostFBO = 0);*/
+	
 	bool pyCreateReceiver(const char* theName, unsigned int theWidth, unsigned int theHeight, bool bUseActive);
 	bool pyReceiveTexture(const char* theName, unsigned int theWidth, unsigned int theHeight, GLuint TextureID, GLuint TextureTarget, bool bInvert, GLuint HostFBO);
 	unsigned int GetWidth(const char* theName);

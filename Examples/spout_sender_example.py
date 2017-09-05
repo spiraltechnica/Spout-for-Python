@@ -78,6 +78,7 @@ def main():
     spoutSender = SpoutSDK.SpoutSender()
     spoutSenderWidth = width
     spoutSenderHeight = height
+    # Its signature in c++ looks like this: bool CreateSender(const char *Sendername, unsigned int width, unsigned int height, DWORD dwFormat = 0);
     spoutSender.CreateSender('Spout Python Sender', spoutSenderWidth, spoutSenderHeight, 0)
 
     # init spout sender texture ID
@@ -116,6 +117,7 @@ def main():
         glBindTexture(GL_TEXTURE_2D, 0)
 
         # send texture to Spout
+        # Its signature in C++ looks like this: bool SendTexture(GLuint TextureID, GLuint TextureTarget, unsigned int width, unsigned int height, bool bInvert=true, GLuint HostFBO = 0);
         spoutSender.SendTexture(senderTextureID, GL_TEXTURE_2D, spoutSenderWidth, spoutSenderHeight, True, 0)
        
         # update display 

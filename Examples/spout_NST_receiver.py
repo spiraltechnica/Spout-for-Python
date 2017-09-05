@@ -62,7 +62,8 @@ def main():
     spoutReceiverHeight = args.spout_size[1]
     # create spout receiver
     spoutReceiver = SpoutSDK.SpoutReceiver()
-    # name, width, height, use active sender
+
+    # Its signature in c++ looks like this: bool pyCreateReceiver(const char* theName, unsigned int theWidth, unsigned int theHeight, bool bUseActive);
     spoutReceiver.pyCreateReceiver(receiverName,spoutReceiverWidth,spoutReceiverHeight, False)
 
     # create textures for spout receiver and spout sender 
@@ -118,6 +119,7 @@ def main():
                 quit()
         
         # receive texture
+        # Its signature in c++ looks like this: bool pyReceiveTexture(const char* theName, unsigned int theWidth, unsigned int theHeight, GLuint TextureID, GLuint TextureTarget, bool bInvert, GLuint HostFBO);
         spoutReceiver.pyReceiveTexture(receiverName, spoutReceiverWidth, spoutReceiverHeight, textureReceiveID, GL_TEXTURE_2D, False, 0)
         
         glBindTexture(GL_TEXTURE_2D, textureReceiveID)
