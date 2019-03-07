@@ -32,18 +32,21 @@
 
 #include "spoutSDK.h"
 
-
 class SPOUT_DLLEXP SpoutReceiver {
 
 	public:
 
 	SpoutReceiver();
     ~SpoutReceiver();
-	
+
+	//---------------------------------------------------------
+	// PYTHON WRAPPING Functions
+	//---------------------------------------------------------
 	bool pyCreateReceiver(const char* theName, unsigned int theWidth, unsigned int theHeight, bool bUseActive);
 	bool pyReceiveTexture(const char* theName, unsigned int theWidth, unsigned int theHeight, GLuint TextureID, GLuint TextureTarget, bool bInvert, GLuint HostFBO);
 	unsigned int GetWidth(const char* theName);
 	unsigned int GetHeight(const char* theName);
+	//---------------------------------------------------------
 
 	bool CreateReceiver(char* Sendername, unsigned int &width, unsigned int &height, bool bUseActive = false);
 	bool ReceiveTexture(char* Sendername, unsigned int &width, unsigned int &height, GLuint TextureID = 0, GLuint TextureTarget = 0, bool bInvert = false, GLuint HostFBO = 0);

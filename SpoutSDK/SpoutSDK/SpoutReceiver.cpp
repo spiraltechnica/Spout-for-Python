@@ -66,6 +66,48 @@ SpoutReceiver::~SpoutReceiver()
 
 }
 
+
+//---------------------------------------------------------
+bool SpoutReceiver::ReceiveTexture(char* name, unsigned int &width, unsigned int &height, GLuint TextureID, GLuint TextureTarget, bool bInvert, GLuint HostFBO)
+{
+	return spout.ReceiveTexture(name, width, height, TextureID, TextureTarget, bInvert, HostFBO);
+}
+
+//---------------------------------------------------------
+// PYTHON WRAPPING Functions
+//---------------------------------------------------------
+bool SpoutReceiver::pyCreateReceiver(const char* theName, unsigned int theWidth, unsigned int theHeight, bool bUseActive)
+{
+	char name[256];
+
+	strcpy_s(name, 256, theName);
+	unsigned int width = theWidth;
+	unsigned int height = theHeight;
+
+	bool bRet = spout.CreateReceiver(name, width, height, bUseActive);
+
+	if (bRet) {
+		//strcpy_s(theName, 256, name);
+		theWidth = width;
+		theHeight = height;
+	}
+
+	return bRet;
+}
+
+//---------------------------------------------------------
+bool SpoutReceiver::pyReceiveTexture(const char* theName, unsigned int theWidth, unsigned int theHeight, GLuint TextureID, GLuint TextureTarget, bool bInvert, GLuint HostFBO)
+{
+	char name[256];
+
+	strcpy_s(name, 256, theName);
+	unsigned int width = theWidth;
+	unsigned int height = theHeight;
+
+	return spout.ReceiveTexture(name, width, height, TextureID, TextureTarget, bInvert, HostFBO);
+}
+
+//---------------------------------------------------------
 unsigned int  SpoutReceiver::GetWidth(const char* theName) {
 	unsigned int width;
 	unsigned int height;
@@ -78,6 +120,8 @@ unsigned int  SpoutReceiver::GetWidth(const char* theName) {
 		return 0;
 	}
 }
+
+//---------------------------------------------------------
 unsigned int  SpoutReceiver::GetHeight(const char* theName) {
 	unsigned int width;
 	unsigned int height;
@@ -90,25 +134,8 @@ unsigned int  SpoutReceiver::GetHeight(const char* theName) {
 		return 0;
 	}
 }
-
 //---------------------------------------------------------
-bool SpoutReceiver::ReceiveTexture(char* name, unsigned int &width, unsigned int &height, GLuint TextureID, GLuint TextureTarget, bool bInvert, GLuint HostFBO)
-{
-	
-	return spout.ReceiveTexture(name, width, height, TextureID, TextureTarget, bInvert, HostFBO);
-}
-
-bool SpoutReceiver::pyReceiveTexture(const char* theName, unsigned int theWidth, unsigned int theHeight, GLuint TextureID, GLuint TextureTarget, bool bInvert, GLuint HostFBO)
-{
-	char name[256];
-
-	strcpy_s(name, 256, theName);
-	unsigned int width = theWidth;
-	unsigned int height = theHeight;
-
-	return spout.ReceiveTexture(name, width, height, TextureID, TextureTarget, bInvert, HostFBO);
-}
-
+//---------------------------------------------------------
 
 //---------------------------------------------------------
 bool SpoutReceiver::ReceiveImage(char* Sendername, 
@@ -140,25 +167,6 @@ bool SpoutReceiver::GetImageSize(char* name, unsigned int &width, unsigned int &
 bool SpoutReceiver::CreateReceiver(char* name, unsigned int &width, unsigned int &height, bool bUseActive)
 {
 	return spout.CreateReceiver(name, width, height, bUseActive);
-}
-
-bool SpoutReceiver::pyCreateReceiver(const char* theName, unsigned int theWidth, unsigned int theHeight, bool bUseActive)
-{
-	char name[256];
-
-	strcpy_s(name, 256, theName);
-	unsigned int width = theWidth;
-	unsigned int height = theHeight;
-
-	bool bRet = spout.CreateReceiver(name, width, height, bUseActive);
-
-	if (bRet) {
-		//strcpy_s(theName, 256, name);
-		theWidth = width;
-		theHeight = height;
-	}
-
-	return bRet;
 }
 
 //---------------------------------------------------------
