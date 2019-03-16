@@ -40,8 +40,12 @@ class SPOUT_DLLEXP SpoutSender {
 	SpoutSender();
     ~SpoutSender();
 
+	//---------------------------------------------------------
+	// PYTHON WRAPPING Functions
+	//---------------------------------------------------------
 	char const* SayHello();
-	
+	//---------------------------------------------------------
+	//---------------------------------------------------------
 
 	bool CreateSender(const char *Sendername, unsigned int width, unsigned int height, DWORD dwFormat = 0);
 	bool UpdateSender(const char *Sendername, unsigned int width, unsigned int height);

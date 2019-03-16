@@ -65,11 +65,15 @@ SpoutSender::~SpoutSender()
 
 }
 
-
+//---------------------------------------------------------
+// PYTHON WRAPPING Functions
+//---------------------------------------------------------
 char const* SpoutSender::SayHello()
 {
 	return "Hello, from c++ dll!";
 }
+//---------------------------------------------------------
+//---------------------------------------------------------
 
 //---------------------------------------------------------
 bool SpoutSender::CreateSender(const char *name, unsigned int width, unsigned int height, DWORD dwFormat)
