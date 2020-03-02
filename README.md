@@ -13,7 +13,7 @@ It was built against Boost 1.72 and Python 3.7-amd64 using Visual Studio 2019 on
 This modified library does not yet fully implement the functionality available in the SpoutSDK. 
 
 ## Using the Library
-The SpoutSDK.pyd library is located in the [Library/](Library/) folder of this repository. Choose desired python version and ename it to 'SpoutSDK.pyf'
+The SpoutSDK.pyd library is located in the [Library/](Library/) folder of this repository. Choose desired python version and rename it to 'SpoutSDK.pyd'
 
 You shouldn't need to compile Boost or have Visual Studio installed to run these examples and integrate the library into your own Python projects
 
