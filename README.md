@@ -1,5 +1,7 @@
 # Spout for Python
 
+![alt text](https://raw.githubusercontent.com/Ajasra/Spout-for-Python/Images/spout.JPG)
+
 Based on https://github.com/spiraltechnica/Spout-for-Python
 
 A modified Spout library using Boost::Python to enable Spout texture sharing using Python.
