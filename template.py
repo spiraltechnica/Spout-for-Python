@@ -106,8 +106,11 @@ def main():
         if req_type == 'input' or req_type == 'input-output':
             # receive texture
             # Its signature in c++ looks like this: bool pyReceiveTexture(const char* theName, unsigned int theWidth, unsigned int theHeight, GLuint TextureID, GLuint TextureTarget, bool bInvert, GLuint HostFBO);
-            spoutReceiver.pyReceiveTexture(receiverName, spoutReceiverWidth, spoutReceiverHeight, textureReceiveID, GL_TEXTURE_2D, False, 0)
-        
+            if sys.version_info[1] != 7:
+                spoutReceiver.pyReceiveTexture(receiverName, spoutReceiverWidth, spoutReceiverHeight, textureReceiveID, GL_TEXTURE_2D, False, 0)
+            else:
+                spoutReceiver.pyReceiveTexture(receiverName, spoutReceiverWidth, spoutReceiverHeight, textureReceiveID.item(), GL_TEXTURE_2D, False, 0)
+
             glBindTexture(GL_TEXTURE_2D, textureReceiveID)
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
@@ -165,7 +168,10 @@ def main():
         if req_type == 'output' or req_type == 'input-output':
             # Send texture to spout...
             # Its signature in C++ looks like this: bool SendTexture(GLuint TextureID, GLuint TextureTarget, unsigned int width, unsigned int height, bool bInvert=true, GLuint HostFBO = 0);
-            spoutSender.SendTexture(textureSendID, GL_TEXTURE_2D, spoutSenderWidth, spoutSenderHeight, False, 0)
+            if sys.version_info[1] != 7:
+                spoutSender.SendTexture(textureSendID, GL_TEXTURE_2D, spoutSenderWidth, spoutSenderHeight, False, 0)
+            else:
+                spoutSender.SendTexture(textureSendID.item(), GL_TEXTURE_2D, spoutSenderWidth, spoutSenderHeight, False, 0)
   
 
 if __name__ == '__main__':
