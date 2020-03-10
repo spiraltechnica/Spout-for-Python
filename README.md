@@ -36,9 +36,13 @@ def main_pipeline(data):
 
 ## Arguments
 --type input/output/input-output
+
 --spout_size Width and height of the spout receiver and sender
+
 --spout_input_name Spout receiving name
+
 --spout_output_name Spout sending name
+
 --silent True if want hide pyGame window
 
 
