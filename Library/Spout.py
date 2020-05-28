@@ -121,10 +121,7 @@ class Spout() :
         if self.spoutReceiver != None and self.textureReceiveID != None:
             # receive texture
             # Its signature in c++ looks like this: bool pyReceiveTexture(const char* theName, unsigned int theWidth, unsigned int theHeight, GLuint TextureID, GLuint TextureTarget, bool bInvert, GLuint HostFBO);
-            if sys.version_info[1] == 5:
-                self.spoutReceiver.pyReceiveTexture( self.receiverName, self.receiverWidth, self.receiverHeight, self.textureReceiveID, GL_TEXTURE_2D, False, 0 )
-            else:
-                self.spoutReceiver.pyReceiveTexture( self.receiverName, self.receiverWidth, self.receiverHeight, self.textureReceiveID.item(), GL_TEXTURE_2D, False, 0 )
+            self.spoutReceiver.pyReceiveTexture( self.receiverName, self.receiverWidth, self.receiverHeight, self.textureReceiveID.item(), GL_TEXTURE_2D, False, 0 )
 
             glBindTexture( GL_TEXTURE_2D, self.textureReceiveID )
             glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE )
@@ -193,10 +190,7 @@ class Spout() :
             # update window
             pygame.display.flip()        
 
-            if sys.version_info[1] == 5:
-                self.spoutSender.SendTexture(self.textureSendID, GL_TEXTURE_2D, self.senderWidth, self.senderHeight, False, 0)
-            else:
-                self.spoutSender.SendTexture(self.textureSendID.item(), GL_TEXTURE_2D, self.senderWidth, self.senderHeight, False, 0)
+            self.spoutSender.SendTexture(self.textureSendID.item(), GL_TEXTURE_2D, self.senderWidth, self.senderHeight, False, 0)
 
     def check(self):
         """
