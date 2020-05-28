@@ -36,6 +36,11 @@ if __name__ == "__main__":
 Parameters and arguments for sender and receiver can be checked in the ```Library/Spout.py```
 
 ## Requirements
+
+```
+pip install -r requirements.txt
+```
+
 - pygame
 - pyopengl
 
