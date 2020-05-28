@@ -40,5 +40,6 @@ Parameters and arguments for sender and receiver can be checked in the ```Librar
 - pyopengl
 
 ## Additional
-Support multiple spount instances (if you want have multiple sender/receivers)
-Now it can be used as any python library, just few lines of code
+* Support multiple spount instances (if you want have multiple sender/receivers)
+* Now it can be used as any python library, just few lines of code
+* Automatically define the size of receiver and data to send
