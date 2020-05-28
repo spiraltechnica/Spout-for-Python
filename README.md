@@ -6,6 +6,9 @@ A modified Spout library using Boost::Python to enable Spout texture sharing usi
 This library is for use with Python 3.5 / 3.6 / 3.7 64bit. Now it will automatically define python version and load appropriate file.
 
 ## Using the Library
+
+[![](http://img.youtube.com/vi/CmI4zwSAajw/0.jpg)](http://www.youtube.com/watch?v=CmI4zwSAajw "Spout for Python")
+
 ```python test.py```
 or just check sample code in the test.py
 ```
@@ -45,6 +48,5 @@ pip install -r requirements.txt
 - pyopengl
 
 ## Additional
-* Support multiple spount instances (if you want have multiple sender/receivers)
 * Now it can be used as any python library, just few lines of code
 * Automatically define the size of receiver and data to send
