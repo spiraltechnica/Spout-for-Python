@@ -7,6 +7,7 @@ This library is for use with Python 3.5 / 3.6 / 3.7 64bit. Now it will automatic
 
 ## Using the Library
 
+Watch video use/demo (click image below)
 [![](http://img.youtube.com/vi/CmI4zwSAajw/0.jpg)](http://www.youtube.com/watch?v=CmI4zwSAajw "Spout for Python")
 
 ```python test.py```
