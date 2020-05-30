@@ -36,6 +36,8 @@ if __name__ == "__main__":
     main()
 ```
 
+If want multiple receivers/senders, check ```test_mult.py```
+
 ## Parameters 
 Parameters and arguments for sender and receiver can be checked in the ```Library/Spout.py```
 
@@ -49,5 +51,6 @@ pip install -r requirements.txt
 - pyopengl
 
 ## Additional
+* Allow multiple receivers senders
 * Now it can be used as any python library, just few lines of code
 * Automatically define the size of receiver and data to send
