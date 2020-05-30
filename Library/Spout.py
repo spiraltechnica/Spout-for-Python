@@ -1,7 +1,6 @@
 import sys
-import os
 
-sys.path.append('{}/Library/3{}'.format(os.getcwd(), sys.version_info[1]))
+sys.path.append('Library/3{}'.format(sys.version_info[1]))
 
 import numpy as np
 import argparse
@@ -18,7 +17,7 @@ class Spout() :
     Spout class for python wrapper
     """
 
-    def __init__( self, silent = False, width = 1280, height = 720, n_rec = 1, n_send = 1 ):
+    def __init__( self, silent = False, width = 1280, height = 720 ):
         """
         Initialize spout object
         Args:
@@ -27,29 +26,18 @@ class Spout() :
             height: window height, default = 720
         """
 
-        self.n_rec = n_rec
-        self.n_send = n_send
-
         self.width = width
         self.height = height
         self.silent = silent
         self.display = ( self.width, self.height )
 
-        self.spoutReceiver = [None] * self.n_rec
-        self.receiverWidth = [None] * self.n_rec
-        self.receiverHeight = [None] * self.n_rec
-        self.textureReceiveID = [None] * self.n_rec
-        self.receiverName = [None] * self.n_rec
-        self.receiverType = [None] * self.n_rec
-        self.receiverDataType = [None] * self.n_rec
+        self.spoutReceiver = None
+        self.receiverWidth = None
+        self.receiverHeight = None
+        self.textureReceiveID = None
 
-        self.spoutSender = [None] * self.n_send
-        self.textureSendID = [None] * self.n_send
-        self.senderWidth = [None] * self.n_send
-        self.senderHeight = [None] * self.n_send
-        self.senderType = [None] * self.n_send
-        self.senderDataType = [None] * self.n_send
-        self.senderName = [None] * self.n_send
+        self.spoutSender = None
+        self.textureSendID = None
 
         #window setup
         pygame.init() 
@@ -65,7 +53,7 @@ class Spout() :
         glClearColor( 0.0, 0.0, 0.0, 0.0)
         glEnable( GL_TEXTURE_2D )
 
-    def createReceiver( self, name = 'input', type = GL_RGB, dataType = GL_UNSIGNED_BYTE , id = 0):
+    def createReceiver( self, name = 'input', type = GL_RGB, dataType = GL_UNSIGNED_BYTE):
         """
         Initialize spout receiver
         Args:
@@ -74,36 +62,36 @@ class Spout() :
             dataType: texture data type, default = GL_UNSIGNED_BYTE, available = GL_UNSIGNED_BYTE, GL_FLOAT
         """
 
-        self.receiverName[id] = name
-        self.receiverType[id] = type
-        self.receiverDataType[id] = dataType
+        self.receiverName = name
+        self.receiverType = type
+        self.receiverDataType = dataType
         
         # init spout receiver
-        self.spoutReceiver[id] = SpoutSDK.SpoutReceiver()
+        self.spoutReceiver = SpoutSDK.SpoutReceiver()
 
-        self.receiverWidth[id] = self.spoutReceiver[id].GetWidth( self.receiverName[id] )
-        self.receiverHeight[id] = self.spoutReceiver[id].GetHeight( self.receiverName[id] )
+        self.receiverWidth = self.spoutReceiver.GetWidth( self.receiverName )
+        self.receiverHeight = self.spoutReceiver.GetHeight( self.receiverName )
 
         # create spout receiver
 	    # Its signature in c++ looks like this: bool pyCreateReceiver(const char* theName, unsigned int theWidth, unsigned int theHeight, bool bUseActive);
-        self.spoutReceiver[id].pyCreateReceiver( self.receiverName[id], self.receiverWidth[id], self.receiverHeight[id], False )
+        self.spoutReceiver.pyCreateReceiver( self.receiverName, self.receiverWidth, self.receiverHeight, False )
         # create textures for spout receiver and spout sender 
-        self.textureReceiveID[id] = glGenTextures(1)
+        self.textureReceiveID = glGenTextures(1)
         
         # initalise receiver texture
-        glBindTexture( GL_TEXTURE_2D, self.textureReceiveID[id] )
+        glBindTexture( GL_TEXTURE_2D, self.textureReceiveID )
         glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE )
         glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE )
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST )
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST )
 
         # copy data into texture
-        glTexImage2D( GL_TEXTURE_2D, 0, self.receiverType[id], self.receiverWidth[id], self.receiverHeight[id], 0, self.receiverType[id], self.receiverDataType[id], None ) 
+        glTexImage2D( GL_TEXTURE_2D, 0, self.receiverType, self.receiverWidth, self.receiverHeight, 0, self.receiverType, self.receiverDataType, None ) 
         glBindTexture(GL_TEXTURE_2D, 0)
 
         return True
 
-    def createSender(self, name = 'output', type = GL_RGB, dataType = GL_UNSIGNED_BYTE, id = 0):
+    def createSender(self, name = 'output', type = GL_RGB, dataType = GL_UNSIGNED_BYTE):
         """
         Initialize spout sender
         Args:
@@ -112,54 +100,36 @@ class Spout() :
             dataType: texture data type, default = GL_UNSIGNED_BYTE, available = GL_UNSIGNED_BYTE, GL_FLOAT
         """
 
-        self.senderName[id] = name
-        self.senderWidth[id] = 0
-        self.senderHeight[id] = 0
-        self.senderType[id] = type
-        self.senderDataType[id] = dataType
+        self.senderName = name
+        self.senderWidth = 0
+        self.senderHeight = 0
+        self.senderType = type
+        self.senderDataType = dataType
         # init spout sender
 
-        self.spoutSender[id] = SpoutSDK.SpoutSender()
+        self.spoutSender = SpoutSDK.SpoutSender()
 	    # Its signature in c++ looks like this: bool CreateSender(const char *Sendername, unsigned int width, unsigned int height, DWORD dwFormat = 0);
-        self.spoutSender[id].CreateSender(self.senderName[id], self.width, self.height, 0)
+        self.spoutSender.CreateSender(self.senderName, self.width, self.height, 0)
         # create textures for spout receiver and spout sender 
-        self.textureSendID[id] = glGenTextures(1)
+        self.textureSendID = glGenTextures(1)
 
-    def receive( self , id = 0):
+    def receive( self ):
         """
         Receive texture
         """
 
-        # if textures sizes do not match recreate receiver
-        if self.receiverWidth[id] != self.spoutReceiver[id].GetWidth(self.receiverName[id]) or self.receiverHeight[id] != self.spoutReceiver[id].GetHeight(self.receiverName[id]):
-
-            self.receiverWidth[id] = self.spoutReceiver[id].GetWidth( self.receiverName[id] )
-            self.receiverHeight[id] = self.spoutReceiver[id].GetHeight( self.receiverName[id] )
-            
-            self.spoutReceiver[id].pyCreateReceiver( self.receiverName[id], self.receiverWidth[id], self.receiverHeight[id], False )
-            self.textureReceiveID[id] = glGenTextures(1)
-            
-            glBindTexture( GL_TEXTURE_2D, self.textureReceiveID[id] )
-            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE )
-            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE )
-            glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST )
-            glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST )
-
-            glTexImage2D( GL_TEXTURE_2D, 0, self.receiverType[id], self.receiverWidth[id], self.receiverHeight[id], 0, self.receiverType[id], self.receiverDataType[id], None ) 
-            glBindTexture(GL_TEXTURE_2D, 0)
-
-        if self.spoutReceiver[id] != None and self.textureReceiveID[id] != None:
+        if self.spoutReceiver != None and self.textureReceiveID != None:
             # receive texture
             # Its signature in c++ looks like this: bool pyReceiveTexture(const char* theName, unsigned int theWidth, unsigned int theHeight, GLuint TextureID, GLuint TextureTarget, bool bInvert, GLuint HostFBO);
-            self.spoutReceiver[id].pyReceiveTexture( self.receiverName[id], self.receiverWidth[id], self.receiverHeight[id], self.textureReceiveID[id].item(), GL_TEXTURE_2D, False, 0 )
+            self.spoutReceiver.pyReceiveTexture( self.receiverName, self.receiverWidth, self.receiverHeight, self.textureReceiveID.item(), GL_TEXTURE_2D, False, 0 )
 
-            glBindTexture( GL_TEXTURE_2D, self.textureReceiveID[id] )
+            glBindTexture( GL_TEXTURE_2D, self.textureReceiveID )
             glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE )
             glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE )
             glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST )
             glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST )
             # copy pixel byte array from received texture   
-            data = glGetTexImage( GL_TEXTURE_2D, 0, self.receiverType[id], self.receiverDataType[id], outputType=None )  #Using GL_RGB can use GL_RGBA 
+            data = glGetTexImage( GL_TEXTURE_2D, 0, self.receiverType, self.receiverDataType, outputType=None )  #Using GL_RGB can use GL_RGBA 
             glBindTexture( GL_TEXTURE_2D, 0 )
             # swap width and height data around due to oddness with glGetTextImage. http://permalink.gmane.org/gmane.comp.python.opengl.user/2423
             data.shape = (data.shape[1], data.shape[0], data.shape[2])
@@ -169,7 +139,7 @@ class Spout() :
         else:
             return self.empty()
 
-    def send(self, data, id = 0):
+    def send(self, data):
         """
         Send texture
         """
@@ -177,19 +147,19 @@ class Spout() :
         if data.size == 0:
             data = self.empty()
         else:
-            self.senderWidth[id] = data.shape[1]
-            self.senderHeight[id] = data.shape[0]
+            self.senderWidth = data.shape[1]
+            self.senderHeight = data.shape[0]
 
-        if self.spoutSender[id] != None and self.textureSendID[id] != None:
+        if self.spoutSender != None and self.textureSendID != None:
 
             # setup the texture so we can load the output into it
-            glBindTexture( GL_TEXTURE_2D, self.textureSendID[id] );
+            glBindTexture( GL_TEXTURE_2D, self.textureSendID );
             glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE )
             glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE )
             glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST )
             glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST )
             # copy output into texture
-            glTexImage2D( GL_TEXTURE_2D, 0, self.senderType[id], self.senderWidth[id], self.senderHeight[id], 0, self.senderType[id], self.senderDataType[id], data )
+            glTexImage2D( GL_TEXTURE_2D, 0, self.senderType, self.senderWidth, self.senderHeight, 0, self.senderType, self.senderDataType, data )
                 
             # setup window to draw to screen
             glActiveTexture( GL_TEXTURE0 )
@@ -220,7 +190,7 @@ class Spout() :
             # update window
             pygame.display.flip()        
 
-            self.spoutSender[id].SendTexture(self.textureSendID[id].item(), GL_TEXTURE_2D, self.senderWidth[id], self.senderHeight[id], False, 0)
+            self.spoutSender.SendTexture(self.textureSendID.item(), GL_TEXTURE_2D, self.senderWidth, self.senderHeight, False, 0)
 
     def check(self):
         """
@@ -228,8 +198,7 @@ class Spout() :
         """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                for i in range(0,self.n_rec):
-                    self.spoutReceiver[i].ReleaseReceiver()
+                self.spoutReceiver.ReleaseReceiver()
                 pygame.quit()
                 quit()
 
