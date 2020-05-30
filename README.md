@@ -54,3 +54,5 @@ pip install -r requirements.txt
 * Allow multiple receivers senders
 * Now it can be used as any python library, just few lines of code
 * Automatically define the size of receiver and data to send
+* Can change receiver size on the go
+* Support different receiver/sender imageFormat/type
